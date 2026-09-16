@@ -41,7 +41,7 @@ export async function verifyIdToken(token) {
       const parts = token.split(":");
       const uid = parts[1] || "dev-user-123";
       const email = parts[2] || `${uid}@fitnation.ai`;
-      const name = parts[3] || "Alex Fit";
+      const name = parts[3] || "Vishal Fit";
       return {
         uid,
         email,

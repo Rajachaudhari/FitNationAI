@@ -5,7 +5,14 @@
 const BASE_URL = "/api";
 
 // Configurable auth token (stored in localStorage or memory)
-let currentToken = localStorage.getItem("fitnation_token") || "dev-token:alex-fit:alex@fitnation.ai:Alex Fit";
+const savedToken = localStorage.getItem("fitnation_token");
+let currentToken = (savedToken && !savedToken.includes("alex-fit"))
+  ? savedToken
+  : "dev-token:vishal-fit:vishal@fitnation.ai:Vishal Fit";
+
+if (savedToken && savedToken.includes("alex-fit")) {
+  localStorage.setItem("fitnation_token", currentToken);
+}
 
 export function setAuthToken(token) {
   currentToken = token;

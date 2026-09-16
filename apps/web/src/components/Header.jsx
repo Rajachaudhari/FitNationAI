@@ -164,7 +164,7 @@ export function Header({ user, onRefreshUser }) {
             } else if (val === "beta") {
               setAuthToken("dev-token:user-beta:beta@fitnation.ai:Beta Athlete");
             } else {
-              setAuthToken("dev-token:alex-fit:alex@fitnation.ai:Alex Fit");
+              setAuthToken("dev-token:vishal-fit:vishal@fitnation.ai:Vishal Fit");
             }
             onRefreshUser();
           }}
@@ -179,7 +179,7 @@ export function Header({ user, onRefreshUser }) {
             outline: "none",
           }}
         >
-          <option value="alex">Athlete: Alex Fit</option>
+          <option value="vishal">Athlete: Vishal Fit</option>
           <option value="alpha">Athlete: Alpha User</option>
           <option value="beta">Athlete: Beta User</option>
         </select>

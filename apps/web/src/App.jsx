@@ -29,7 +29,7 @@ export function App() {
     } catch (err) {
       console.warn("Could not load user profile, syncing default dev user...");
       try {
-        const synced = await api.syncUser({ name: "Alex Fit" });
+        const synced = await api.syncUser({ name: "Vishal Fit" });
         setUser(synced);
       } catch (e) {
         console.error("User sync error:", e);

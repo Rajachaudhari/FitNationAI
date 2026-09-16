@@ -106,7 +106,7 @@ export function Sidebar({ activeTab, setActiveTab, user, streak }) {
         />
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: "0.88rem", fontWeight: 700, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-            {user?.name || "Alex Fit"}
+            {user?.name || "Vishal Fit"}
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "2px" }}>
             <span style={{ fontSize: "0.72rem", color: "var(--accent-emerald)", fontWeight: 600 }}>

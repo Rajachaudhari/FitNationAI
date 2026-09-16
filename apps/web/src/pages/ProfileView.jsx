@@ -103,7 +103,7 @@ export function ProfileView({ user, onRefreshUser }) {
             alt="Profile Avatar"
             style={{ width: "100px", height: "100px", borderRadius: "50%", objectFit: "cover", border: "3px solid var(--accent-cyan)", marginBottom: "16px" }}
           />
-          <h3 style={{ fontSize: "1.5rem" }}>{user?.name || "Alex Fit"}</h3>
+          <h3 style={{ fontSize: "1.5rem" }}>{user?.name || "Vishal Fit"}</h3>
           <p style={{ color: "var(--text-secondary)", fontSize: "0.88rem", marginBottom: "16px" }}>{user?.email}</p>
 
           <div style={{ display: "flex", gap: "10px", marginBottom: "24px" }}>
