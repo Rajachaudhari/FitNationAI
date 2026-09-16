@@ -1,0 +1,16 @@
+{
+  "name": "fitnation-ai-platform",
+  "version": "2.0.0",
+  "description": "FitNation AI — Production-grade AI fitness platform with computer vision form check and conversational coach",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "apps/web"
+  ],
+  "scripts": {
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:web": "npm --prefix apps/web run dev",
+    "test": "npm --prefix backend run test",
+    "build:web": "npm --prefix apps/web run build"
+  }
+}
