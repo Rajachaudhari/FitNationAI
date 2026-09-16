@@ -130,7 +130,7 @@ export function NutritionTracker() {
         className="glass-panel"
         style={{
           padding: "24px 28px",
-          background: "linear-gradient(135deg, rgba(0, 240, 255, 0.07) 0%, rgba(19, 23, 37, 0.9) 100%)",
+          background: "var(--nutrition-banner-bg)",
           border: "1px solid rgba(0, 240, 255, 0.25)",
         }}
       >
@@ -283,7 +283,7 @@ export function NutritionTracker() {
             padding: "20px",
           }}
         >
-          <div className="glass-panel" style={{ maxWidth: "450px", width: "100%", padding: "28px", background: "#10131e" }}>
+          <div className="glass-panel" style={{ maxWidth: "450px", width: "100%", padding: "28px", background: "var(--modal-bg)" }}>
             <h3 style={{ fontSize: "1.4rem", marginBottom: "18px" }}>Log Meal Item</h3>
             <form onSubmit={handleManualSubmit} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
               <div>

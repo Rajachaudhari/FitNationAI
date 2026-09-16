@@ -171,7 +171,7 @@ export function Dashboard({ user, onNavigate }) {
           className="glass-panel"
           style={{
             padding: "28px",
-            background: "linear-gradient(145deg, rgba(139, 92, 246, 0.12) 0%, rgba(19, 23, 37, 0.85) 100%)",
+            background: "var(--coach-card-bg)",
             border: "1px solid rgba(139, 92, 246, 0.25)",
             display: "flex",
             flexDirection: "column",
@@ -193,8 +193,8 @@ export function Dashboard({ user, onNavigate }) {
             className="btn-secondary"
             style={{
               width: "100%",
-              borderColor: "rgba(139, 92, 246, 0.4)",
-              color: "#c4b5fd",
+              borderColor: "var(--coach-btn-border)",
+              color: "var(--coach-btn-color)",
             }}
           >
             <BotMessageSquare size={18} />
@@ -215,7 +215,7 @@ export function Dashboard({ user, onNavigate }) {
             justifyContent: "space-between",
             flexWrap: "wrap",
             gap: "20px",
-            background: "linear-gradient(135deg, rgba(255, 171, 0, 0.08) 0%, rgba(19, 23, 37, 0.8) 100%)",
+            background: "var(--challenge-card-bg)",
             border: "1px solid rgba(255, 171, 0, 0.25)",
           }}
         >

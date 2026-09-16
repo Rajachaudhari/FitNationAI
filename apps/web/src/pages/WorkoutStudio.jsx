@@ -129,7 +129,7 @@ export function WorkoutStudio({ onRefreshUser }) {
           alignItems: "center",
           flexWrap: "wrap",
           gap: "20px",
-          background: "linear-gradient(135deg, rgba(0, 240, 255, 0.08) 0%, rgba(19, 23, 37, 0.9) 100%)",
+          background: "var(--workout-banner-bg)",
         }}
       >
         <div>
@@ -303,7 +303,7 @@ export function WorkoutStudio({ onRefreshUser }) {
               maxWidth: "500px",
               width: "100%",
               padding: "32px",
-              background: "#10131e",
+              background: "var(--modal-bg)",
               border: "1px solid var(--accent-cyan)",
               boxShadow: "0 0 40px rgba(0, 240, 255, 0.2)",
             }}

@@ -250,7 +250,7 @@ export function ProfileView({ user, onRefreshUser }) {
             padding: "20px",
           }}
         >
-          <div className="glass-panel" style={{ maxWidth: "520px", width: "100%", padding: "32px", background: "#101420" }}>
+          <div className="glass-panel" style={{ maxWidth: "520px", width: "100%", padding: "32px", background: "var(--modal-bg)" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
               <h3 style={{ fontSize: "1.45rem" }}>Fitness Assessment</h3>
               <span className="badge badge-cyan">Step {assessStep} of 3</span>

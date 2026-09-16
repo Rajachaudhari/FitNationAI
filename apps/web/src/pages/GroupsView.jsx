@@ -191,7 +191,7 @@ export function GroupsView({ user }) {
             padding: "20px",
           }}
         >
-          <div className="glass-panel" style={{ maxWidth: "450px", width: "100%", padding: "28px", background: "#10131e" }}>
+          <div className="glass-panel" style={{ maxWidth: "450px", width: "100%", padding: "28px", background: "var(--modal-bg)" }}>
             <h3 style={{ fontSize: "1.4rem", marginBottom: "16px" }}>Create Fitness Group</h3>
             <form onSubmit={handleCreateGroup} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
               <div>
