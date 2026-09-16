@@ -1,11 +1,21 @@
-import React, { useState } from "react";
-import { Flame, Sparkles, Bell, RefreshCw } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Flame, Sparkles, Bell, RefreshCw, Sun, Moon } from "lucide-react";
 import confetti from "canvas-confetti";
 import { api, setAuthToken } from "../services/api";
 
 export function Header({ user, onRefreshUser }) {
   const [claiming, setClaiming] = useState(false);
   const [claimStatus, setClaimStatus] = useState(null);
+  const [theme, setTheme] = useState(() => localStorage.getItem("fitnation_theme") || "dark");
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("fitnation_theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  };
 
   const handleClaimStreak = async () => {
     try {
@@ -61,13 +71,46 @@ export function Header({ user, onRefreshUser }) {
         </div>
         <h1 style={{ fontSize: "1.85rem", color: "var(--text-primary)", fontWeight: 800 }}>
           {getGreeting()},{" "}
-          <span style={{ background: "linear-gradient(135deg, #fff 0%, var(--accent-cyan) 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+          <span style={{ background: "linear-gradient(135deg, var(--text-primary) 0%, var(--accent-cyan) 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
             {user?.name || "Athlete"}
           </span>
         </h1>
       </div>
 
       <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
+        {/* Theme Toggle Button */}
+        <button
+          onClick={toggleTheme}
+          className="glass-panel"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            padding: "8px 14px",
+            borderRadius: "var(--radius-full)",
+            cursor: "pointer",
+            border: "1px solid var(--card-border)",
+            background: theme === "light" ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.05)",
+            color: "var(--text-primary)",
+            fontWeight: 600,
+            fontSize: "0.85rem",
+            transition: "all var(--transition-fast)",
+          }}
+          title={`Switch to ${theme === "dark" ? "Light" : "Dark"} Mode`}
+        >
+          {theme === "dark" ? (
+            <>
+              <Sun size={17} color="var(--accent-amber)" />
+              <span>Light</span>
+            </>
+          ) : (
+            <>
+              <Moon size={17} color="var(--accent-cyan)" />
+              <span>Dark</span>
+            </>
+          )}
+        </button>
+
         {/* Streak Button */}
         <button
           onClick={handleClaimStreak}
