@@ -8,6 +8,8 @@ CREATE TABLE IF NOT EXISTS users (
   name                TEXT NOT NULL,
   email               TEXT UNIQUE NOT NULL,
   student_id          TEXT,
+  phone               TEXT,
+  password_hash       TEXT,
   gender              TEXT CHECK (gender IN ('male', 'female', 'other', 'prefer_not_to_say')),
   age                 INT CHECK (age >= 10 AND age <= 120),
   height_cm           NUMERIC CHECK (height_cm > 50 AND height_cm < 300),

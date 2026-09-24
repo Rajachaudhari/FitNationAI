@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # FitNation AI — Next-Gen AI Fitness Platform
 
 [![Tests](https://img.shields.io/badge/tests-21%20passing-brightgreen.svg)]()
@@ -59,7 +60,7 @@ FitNation AI is a full-stack, production-grade fitness ecosystem featuring real-
                         v                                               v
 +-----------------------------------------------+   +---------------------------------------+
 |              DATA ACCESS LAYER                |   |          EXTERNAL PROVIDERS           |
-|  - Repositories with Parameterized Queries    |   |  - AI Provider (OpenAI / Mock fallback|
+|  - Repositories with Parameterized Queries    |   |  - AI Provider (OpenAI / Mock fallback)|
 |  - ACID Transactions (BEGIN/COMMIT/ROLLBACK)  |   |  - Firebase Auth & Admin SDK          |
 |  - Connection Pooling with pg                 |   |  - Firebase Cloud Messaging (FCM)     |
 |  - Primary PostgreSQL + In-Memory Test Driver |   |  - Sentry Error Monitoring            |
@@ -176,3 +177,6 @@ SENTRY_DSN=
 | `GET` | `/api/leaderboard` | Multi-tier leaderboard (Global, College, City) | Bearer JWT |
 
 For full details, refer to `docs/api.md`, `docs/architecture.md`, and `docs/database.md`.
+=======
+# FitNationAI
+>>>>>>> f136ebf0375b3e0ecd2adff6f7e13554edcf57eb

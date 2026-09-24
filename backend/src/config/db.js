@@ -32,6 +32,29 @@ class MemoryDatabase {
   }
 
   initDefaultData() {
+    // Seed default demo user
+    this.tables.users = [
+      {
+        id: "u1000000-0000-0000-0000-000000000001",
+        firebase_uid: "vishal-fit",
+        name: "Vishal Fit",
+        email: "vishal@fitnation.ai",
+        phone: "9876543210",
+        age: 26,
+        gender: "male",
+        points: 420,
+        level: 3,
+        streak_days: 7,
+        fitness_level: "Intermediate",
+        goal: "Muscle building",
+        role: "member",
+        avatar_url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150",
+        password_hash: "pbkdf2:demo",
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      },
+    ];
+
     // Seed default catalog exercises
     this.tables.exercises = [
       {
@@ -198,6 +221,15 @@ export async function testDbConnection() {
   try {
     const client = await pgPoolInstance.connect();
     await client.query("SELECT 1");
+    try {
+      await client.query(`
+        ALTER TABLE users ADD COLUMN IF NOT EXISTS phone TEXT;
+        ALTER TABLE users ADD COLUMN IF NOT EXISTS password_hash TEXT;
+        CREATE INDEX IF NOT EXISTS idx_users_phone ON users(phone);
+      `);
+    } catch (schemaErr) {
+      logger.warn("Auto-migration schema notice:", { reason: schemaErr.message });
+    }
     client.release();
     isPostgresConnected = true;
     logger.info("Live PostgreSQL connected successfully");
@@ -217,6 +249,19 @@ export async function query(text, params = []) {
     try {
       return await pgPoolInstance.query(text, params);
     } catch (err) {
+      if (err.message && (err.message.includes('column "phone" does not exist') || err.message.includes('column "password_hash" does not exist'))) {
+        try {
+          await pgPoolInstance.query(`
+            ALTER TABLE users ADD COLUMN IF NOT EXISTS phone TEXT;
+            ALTER TABLE users ADD COLUMN IF NOT EXISTS password_hash TEXT;
+            CREATE INDEX IF NOT EXISTS idx_users_phone ON users(phone);
+          `);
+          return await pgPoolInstance.query(text, params);
+        } catch (retryErr) {
+          logger.error("PostgreSQL retry failed:", { query: text, error: retryErr.message });
+          throw retryErr;
+        }
+      }
       logger.error("PostgreSQL query failed:", { query: text, error: err.message });
       throw err;
     }
@@ -273,6 +318,14 @@ function executeMemoryQuery(sql, params) {
         rows = rows.filter((u) => u.firebase_uid === params[0]);
       } else if (lower.includes("where id = $1")) {
         rows = rows.filter((u) => u.id === params[0]);
+      } else if (lower.includes("where") && (lower.includes("email") || lower.includes("phone"))) {
+        const val1 = String(params[0] || "").toLowerCase().trim();
+        const val2 = String(params[1] || params[0] || "").toLowerCase().trim();
+        rows = rows.filter((u) => {
+          const uEmail = (u.email || "").toLowerCase();
+          const uPhone = (u.phone || "").toLowerCase();
+          return uEmail === val1 || uPhone === val1 || uEmail === val2 || uPhone === val2;
+        });
       } else if (lower.includes("order by points desc")) {
         rows = rows.sort((a, b) => (b.points || 0) - (a.points || 0));
       }
@@ -377,24 +430,31 @@ function executeMemoryQuery(sql, params) {
 
   // 2. INSERT queries
   if (lower.startsWith("insert into users")) {
-    const existing = memoryDb.tables.users.find((u) => u.firebase_uid === params[0]);
+    const existing = memoryDb.tables.users.find(
+      (u) => (params[0] && u.firebase_uid === params[0]) || (params[2] && u.email && u.email.toLowerCase() === (params[2] || "").toLowerCase())
+    );
     if (existing) {
       existing.updated_at = new Date().toISOString();
       if (params[1]) existing.name = params[1];
+      if (params[3] && !params[3].startsWith("http")) existing.phone = params[3];
       return { rows: [existing], rowCount: 1 };
     }
     const newUser = {
       id: uuidv4(),
-      firebase_uid: params[0],
+      firebase_uid: params[0] || uuidv4(),
       name: params[1] || "Athlete",
       email: params[2] || "user@fitnation.ai",
-      points: 0,
+      phone: params[3] && !params[3].startsWith("http") ? params[3] : "",
+      age: typeof params[4] === "number" ? params[4] : 25,
+      gender: typeof params[5] === "string" ? params[5] : "other",
+      password_hash: params[6] || "",
+      avatar_url: params[7] || (params[3] && params[3].startsWith("http") ? params[3] : "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150"),
+      points: 100,
       level: 1,
       streak_days: 1,
       fitness_level: "Beginner",
       goal: "General fitness",
       role: "member",
-      avatar_url: params[3] || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150",
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };

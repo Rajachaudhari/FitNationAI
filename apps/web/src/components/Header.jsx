@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Flame, Sparkles, Bell, RefreshCw, Sun, Moon } from "lucide-react";
+import { Flame, Sparkles, Bell, RefreshCw, Sun, Moon, LogOut } from "lucide-react";
 import confetti from "canvas-confetti";
 import { api, setAuthToken } from "../services/api";
 
-export function Header({ user, onRefreshUser }) {
+export function Header({ user, onRefreshUser, onLogout }) {
   const [claiming, setClaiming] = useState(false);
   const [claimStatus, setClaimStatus] = useState(null);
   const [theme, setTheme] = useState(() => localStorage.getItem("fitnation_theme") || "dark");
@@ -179,10 +179,37 @@ export function Header({ user, onRefreshUser }) {
             outline: "none",
           }}
         >
-          <option value="vishal">Athlete: Vishal Fit</option>
-          <option value="alpha">Athlete: Alpha User</option>
-          <option value="beta">Athlete: Beta User</option>
+          <option value="current">Athlete: {user?.name || "Authenticated"}</option>
+          <option value="vishal">Switch: Vishal Fit</option>
+          <option value="alpha">Switch: Alpha User</option>
+          <option value="beta">Switch: Beta User</option>
         </select>
+
+        {/* Sign Out Button */}
+        {onLogout && (
+          <button
+            onClick={onLogout}
+            className="glass-panel"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              padding: "8px 14px",
+              borderRadius: "var(--radius-full)",
+              border: "1px solid rgba(255, 51, 102, 0.3)",
+              background: "rgba(255, 51, 102, 0.08)",
+              color: "var(--accent-rose)",
+              fontWeight: 600,
+              fontSize: "0.85rem",
+              cursor: "pointer",
+              transition: "all var(--transition-fast)",
+            }}
+            title="Log out of FitNation"
+          >
+            <LogOut size={15} />
+            <span>Sign Out</span>
+          </button>
+        )}
       </div>
     </header>
   );

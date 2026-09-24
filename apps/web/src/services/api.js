@@ -4,33 +4,41 @@
 
 const BASE_URL = "/api";
 
-// Configurable auth token (stored in localStorage or memory)
-const savedToken = localStorage.getItem("fitnation_token");
-let currentToken = (savedToken && !savedToken.includes("alex-fit"))
-  ? savedToken
-  : "dev-token:vishal-fit:vishal@fitnation.ai:Vishal Fit";
+// Configurable auth token (stored in localStorage, sessionStorage, or memory)
+const savedToken = localStorage.getItem("fitnation_token") || sessionStorage.getItem("fitnation_token");
+let currentToken = savedToken || null;
 
-if (savedToken && savedToken.includes("alex-fit")) {
-  localStorage.setItem("fitnation_token", currentToken);
-}
-
-export function setAuthToken(token) {
+export function setAuthToken(token, remember = true) {
   currentToken = token;
   if (token) {
-    localStorage.setItem("fitnation_token", token);
+    if (remember) {
+      localStorage.setItem("fitnation_token", token);
+      sessionStorage.removeItem("fitnation_token");
+    } else {
+      sessionStorage.setItem("fitnation_token", token);
+      localStorage.removeItem("fitnation_token");
+    }
   } else {
     localStorage.removeItem("fitnation_token");
+    sessionStorage.removeItem("fitnation_token");
   }
 }
 
 export function getAuthToken() {
-  return currentToken;
+  return currentToken || localStorage.getItem("fitnation_token") || sessionStorage.getItem("fitnation_token");
+}
+
+export function clearAuthToken() {
+  currentToken = null;
+  localStorage.removeItem("fitnation_token");
+  sessionStorage.removeItem("fitnation_token");
 }
 
 async function request(path, options = {}) {
+  const token = getAuthToken();
   const headers = {
     "Content-Type": "application/json",
-    ...(currentToken ? { Authorization: `Bearer ${currentToken}` } : {}),
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
     ...options.headers,
   };
 
@@ -53,9 +61,21 @@ async function request(path, options = {}) {
 }
 
 export const api = {
+  // Authentication
+  register: (data) => request("/auth/register", { method: "POST", body: JSON.stringify(data) }),
+  login: (data) => request("/auth/login", { method: "POST", body: JSON.stringify(data) }),
+  getAuthMe: () => request("/auth/me"),
+  logout: () => request("/auth/logout", { method: "POST" }),
+
   // Users & Profile
   syncUser: (data) => request("/users/sync", { method: "POST", body: JSON.stringify(data) }),
-  getProfile: () => request("/users/me"),
+  getProfile: async () => {
+    try {
+      return await request("/auth/me");
+    } catch {
+      return await request("/users/me");
+    }
+  },
   updateProfile: (data) => request("/users/me", { method: "PATCH", body: JSON.stringify(data) }),
   saveAssessment: (data) => request("/users/assessment", { method: "POST", body: JSON.stringify(data) }),
 

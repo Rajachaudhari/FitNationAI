@@ -11,9 +11,10 @@ import {
   UserCheck,
   Flame,
   Zap,
+  LogOut,
 } from "lucide-react";
 
-export function Sidebar({ activeTab, setActiveTab, user, streak }) {
+export function Sidebar({ activeTab, setActiveTab, user, streak, onLogout }) {
   const navItems = [
     { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
     { id: "workout", label: "Workout Studio", icon: Dumbbell },
@@ -106,7 +107,7 @@ export function Sidebar({ activeTab, setActiveTab, user, streak }) {
         />
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: "0.88rem", fontWeight: 700, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-            {user?.name || "Vishal Fit"}
+            {user?.name || "Athlete"}
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "2px" }}>
             <span style={{ fontSize: "0.72rem", color: "var(--accent-emerald)", fontWeight: 600 }}>
@@ -117,6 +118,28 @@ export function Sidebar({ activeTab, setActiveTab, user, streak }) {
             </span>
           </div>
         </div>
+        {onLogout && (
+          <button
+            onClick={onLogout}
+            title="Log Out"
+            style={{
+              background: "transparent",
+              border: "none",
+              color: "var(--text-muted)",
+              cursor: "pointer",
+              padding: "6px",
+              borderRadius: "8px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              transition: "all var(--transition-fast)",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--accent-rose)")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
+          >
+            <LogOut size={16} />
+          </button>
+        )}
       </div>
     </aside>
   );

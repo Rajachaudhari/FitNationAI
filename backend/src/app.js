@@ -9,6 +9,7 @@ import { generalLimiter } from "./middleware/rateLimiter.js";
 import { NotFoundError } from "./utils/errors.js";
 
 // Domain Routes
+import authRoutes from "./modules/auth/auth.routes.js";
 import activityRoutes from "./modules/activity/activity.routes.js";
 import aiCoachRoutes from "./modules/ai-coach/aiCoach.routes.js";
 import challengesRoutes from "./modules/challenges/challenges.routes.js";
@@ -58,6 +59,7 @@ app.get("/api/test", (req, res) => {
 });
 
 // Domain Routing Modules
+app.use("/api/auth", authRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/api/activity", activityRoutes);
 app.use("/api/workouts", workoutsRoutes);

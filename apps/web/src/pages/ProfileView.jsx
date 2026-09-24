@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { User, Settings, Save, Shield, Download, ClipboardCheck } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { User, Settings, Save, Shield, Download, ClipboardCheck, LogOut } from "lucide-react";
 import confetti from "canvas-confetti";
 import { api } from "../services/api";
 
-export function ProfileView({ user, onRefreshUser }) {
+export function ProfileView({ user, onRefreshUser, onLogout }) {
   const [name, setName] = useState(user?.name || "");
   const [age, setAge] = useState(user?.age || 25);
   const [height, setHeight] = useState(user?.height_cm || 178);
@@ -13,6 +13,18 @@ export function ProfileView({ user, onRefreshUser }) {
   const [activityLevel, setActivityLevel] = useState(user?.activity_level || "moderately_active");
   const [saving, setSaving] = useState(false);
   const [savedMsg, setSavedMsg] = useState("");
+
+  useEffect(() => {
+    if (user) {
+      if (user.name) setName(user.name);
+      if (user.age) setAge(user.age);
+      if (user.height_cm) setHeight(user.height_cm);
+      if (user.weight_kg) setWeight(user.weight_kg);
+      if (user.fitness_level) setFitnessLevel(user.fitness_level);
+      if (user.goal) setGoal(user.goal);
+      if (user.activity_level) setActivityLevel(user.activity_level);
+    }
+  }, [user]);
 
   // Assessment state
   const [showAssessmentModal, setShowAssessmentModal] = useState(false);
@@ -82,7 +94,7 @@ export function ProfileView({ user, onRefreshUser }) {
           </p>
         </div>
 
-        <div style={{ display: "flex", gap: "10px" }}>
+        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
           <button onClick={() => setShowAssessmentModal(true)} className="btn-secondary">
             <ClipboardCheck size={18} color="var(--accent-cyan)" />
             <span>Retake Assessment</span>
@@ -91,6 +103,20 @@ export function ProfileView({ user, onRefreshUser }) {
             <Download size={16} />
             <span>Export Data</span>
           </button>
+          {onLogout && (
+            <button
+              onClick={onLogout}
+              className="btn-secondary"
+              style={{
+                borderColor: "rgba(255, 51, 102, 0.4)",
+                color: "var(--accent-rose)",
+              }}
+              title="Sign out of your session"
+            >
+              <LogOut size={16} />
+              <span>Log Out</span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -103,7 +129,7 @@ export function ProfileView({ user, onRefreshUser }) {
             alt="Profile Avatar"
             style={{ width: "100px", height: "100px", borderRadius: "50%", objectFit: "cover", border: "3px solid var(--accent-cyan)", marginBottom: "16px" }}
           />
-          <h3 style={{ fontSize: "1.5rem" }}>{user?.name || "Vishal Fit"}</h3>
+          <h3 style={{ fontSize: "1.5rem" }}>{user?.name || "Athlete"}</h3>
           <p style={{ color: "var(--text-secondary)", fontSize: "0.88rem", marginBottom: "16px" }}>{user?.email}</p>
 
           <div style={{ display: "flex", gap: "10px", marginBottom: "24px" }}>
@@ -130,6 +156,27 @@ export function ProfileView({ user, onRefreshUser }) {
               </div>
             </div>
           </div>
+
+          {onLogout && (
+            <button
+              onClick={onLogout}
+              className="btn-secondary"
+              style={{
+                marginTop: "24px",
+                width: "100%",
+                borderColor: "rgba(255, 51, 102, 0.35)",
+                color: "var(--accent-rose)",
+                background: "rgba(255, 51, 102, 0.06)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
+              }}
+            >
+              <LogOut size={16} />
+              <span>Sign Out of Account</span>
+            </button>
+          )}
         </div>
 
         {/* Biometrics Form */}
