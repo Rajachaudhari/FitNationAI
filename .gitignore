@@ -9,6 +9,7 @@ build/
 .env.local
 .env.*.local
 *.pem
+.env.example
 *.key
 service-account*.json
 
