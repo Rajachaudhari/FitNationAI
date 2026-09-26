@@ -2,7 +2,7 @@
  * FitNation AI — Frontend API Client
  */
 
-const BASE_URL = "/api";
+const BASE_URL = "https://fitnationai-3.onrender.com/api";
 
 // Configurable auth token (stored in localStorage, sessionStorage, or memory)
 const savedToken = localStorage.getItem("fitnation_token") || sessionStorage.getItem("fitnation_token");
