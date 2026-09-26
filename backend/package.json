@@ -4,6 +4,8 @@
   "description": "Production-grade backend for FitNation AI platform",
   "main": "src/server.js",
   "type": "module",
+  "engines": {
+  "node": ">=22.0.0"},
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
