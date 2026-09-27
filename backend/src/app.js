@@ -34,12 +34,21 @@ app.use(
   })
 );
 
+app.set("trust proxy", 1);
 // Body parser (5mb for video pose keypoint payloads)
 app.use(express.json({ limit: "5mb" }));
+
 
 // Rate Limiting
 app.use(generalLimiter);
 
+
+app.get("/", (req, res) => {
+  res.json({
+    ok: true,
+    service: "FitNation AI Backend",
+  });
+});
 // Health & Diagnostic Endpoints
 app.get("/health", (req, res) => {
   res.json({
